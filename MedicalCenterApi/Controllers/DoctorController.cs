@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System.Numerics;
-
+using MedicalCenterApi.Data;
 namespace MedicalCenterApi.Controllers
 {
     [Route("api/[controller]")]
@@ -16,16 +16,18 @@ namespace MedicalCenterApi.Controllers
             
         };
         private readonly ILogger<Doctor> _logger;
-        public DoctorController(ILogger<Doctor> logger)
+        private readonly ApplicationDbContext _db;
+        public DoctorController(ILogger<Doctor> logger, ApplicationDbContext db)
         {
             _logger = logger;
+            _db = db;
         }
 
         [HttpGet]
         public ActionResult<IEnumerable<Doctor>> GetDoctors()
         {
-            _logger.LogInformation("Getting All Villas");
-            return Ok(doctors); 
+         //   _logger.LogInformation("Getting All Villas");
+            return Ok(_db.Doctors.ToList()); 
         }
 
         [HttpGet("{id:int}")]
@@ -39,7 +41,7 @@ namespace MedicalCenterApi.Controllers
                 _logger.LogError("Get Villa Error with Id" + id);
                 return BadRequest();
             }
-            var doctor = doctors.FirstOrDefault(x => x.Id == id);
+            var doctor = _db.Doctors.FirstOrDefault(x => x.Id == id);
             if (doctor == null)
             {
                 return NotFound();
@@ -54,14 +56,14 @@ namespace MedicalCenterApi.Controllers
             {
                 return BadRequest(doctor);
             }
-            if (doctors.FirstOrDefault(x=> x.Name.ToLower() == doctor.Name.ToLower()) != null)
+            if (_db.Doctors.FirstOrDefault(x=> x.Name.ToLower() == doctor.Name.ToLower()) != null)
             {
                 ModelState.AddModelError("Alrady Exist", "Doctor already in the system");
                 return BadRequest(ModelState);
             }
-            int id = doctors.OrderByDescending(x => x.Id).FirstOrDefault().Id + 1;
-            doctor.Id = id;
-            doctors.Add(doctor);
+          
+            _db.Doctors.AddAsync(doctor);
+            _db.SaveChangesAsync();
             return Ok(doctor);
         }
 
@@ -75,12 +77,13 @@ namespace MedicalCenterApi.Controllers
             { 
                  return BadRequest();
             }
-            var doctor = doctors.FirstOrDefault(x => x.Id == id);
+            var doctor = _db.Doctors.FirstOrDefault(x => x.Id == id);
             if (doctor == null) 
             {
                 return NotFound();
             }
-            doctors.Remove(doctor);
+            _db.Doctors.Remove(doctor);
+            _db.SaveChangesAsync();
             return NoContent();
 
         }
@@ -95,8 +98,14 @@ namespace MedicalCenterApi.Controllers
             {
                 return BadRequest();
             }
-            var doctorDB = doctors.FirstOrDefault(x => x.Id == id);
+            var doctorDB = _db.Doctors.FirstOrDefault(x => x.Id == id);
+            if (doctorDB == null)
+            {
+                return NotFound();
+            }
             doctorDB.Name = doctor.Name;
+            doctor.Description = doctor.Description;
+            _db.Update(doctorDB);
             return NoContent();
 
         }
