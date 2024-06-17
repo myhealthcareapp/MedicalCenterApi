@@ -1,8 +1,8 @@
-using ApplicationLayer.Services.Authentication;
+using Application.Services.Authentication;
 using MedicalCenterApi.Data;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
-using ApplicationLayer.Services;
+using Application.Services;
 using Infrastructure.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,7 +15,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers().AddNewtonsoftJson();
 builder.Services
     .AddApplication()
-    .AddInfrastructure();
+    .AddInfrastructure(builder.Configuration);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

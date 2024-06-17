@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ApplicationLayer\ApplicationLayer.csproj" />
+    <ProjectReference Include="..\ApplicationLayer\Application.csproj" />
     <ProjectReference Include="..\Contracs\Contracs.csproj" />
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
   </ItemGroup>

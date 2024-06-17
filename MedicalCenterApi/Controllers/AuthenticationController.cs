@@ -1,4 +1,4 @@
-﻿using ApplicationLayer.Services.Authentication;
+﻿using Application.Services.Authentication;
 using Contracs.Authentication;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
