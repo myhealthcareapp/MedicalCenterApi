@@ -1,5 +1,6 @@
 ﻿using Application.Interface;
 using Application.Interface.Services;
+using DomainLayer.Entities;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -23,7 +24,7 @@ namespace Infrastructure.Authentication
             _dateTimeProvider = dateTimeProvider;
         }
 
-        public string GenerateToken(Guid userId, string firstName, string lastName)
+        public string GenerateToken(User user)
         {
             var signingCredentials = new SigningCredentials(
                     new SymmetricSecurityKey(
@@ -34,9 +35,9 @@ namespace Infrastructure.Authentication
 
             var claims = new[]
             {
-                new Claim(JwtRegisteredClaimNames.Sub, userId.ToString()),
-                new Claim(JwtRegisteredClaimNames.GivenName, firstName),
-                new Claim(JwtRegisteredClaimNames.UniqueName,lastName)
+                new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+                new Claim(JwtRegisteredClaimNames.GivenName, user.FirstName),
+                new Claim(JwtRegisteredClaimNames.UniqueName,user.LastName)
             };
             var securityToken = new JwtSecurityToken(
                 issuer: _jwtSettings.Issuer,

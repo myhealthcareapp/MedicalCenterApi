@@ -9,6 +9,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
+using Application.Persistence;
+using Infrastructure.Persistence;
 
 namespace Infrastructure.Services
 {
@@ -16,7 +18,10 @@ namespace Infrastructure.Services
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, ConfigurationManager configuration)
         {
+            
             services.Configure<JwtSettings>(configuration.GetSection(JwtSettings.SectionName));
+
+            services.AddScoped<IUserRepository, UserRepository>();
             services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
             services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
 
