@@ -1,6 +1,6 @@
 ﻿using Application.Interface;
 using Application.Interface.Services;
-using DomainLayer.Entities;
+using Domain.Entities;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;

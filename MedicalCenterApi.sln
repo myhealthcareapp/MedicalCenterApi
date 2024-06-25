@@ -5,13 +5,13 @@ VisualStudioVersion = 17.9.34728.123
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MedicalCenterApi", "MedicalCenterApi\MedicalCenterApi.csproj", "{E53409BD-9CF9-40D5-9CFA-789BD6103904}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DomainLayer", "DomainLayer\DomainLayer.csproj", "{0C2731C3-17BB-4D20-B311-881244D7825E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "DomainLayer\Domain.csproj", "{0C2731C3-17BB-4D20-B311-881244D7825E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "ApplicationLayer\Application.csproj", "{FB50AD41-1FAC-4ACB-918E-27218DD73F81}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application", "ApplicationLayer\Application.csproj", "{FB50AD41-1FAC-4ACB-918E-27218DD73F81}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{91D57FF9-730A-4D9B-BB7C-16059D124399}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{91D57FF9-730A-4D9B-BB7C-16059D124399}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contracs", "Contracs\Contracs.csproj", "{7EA8832D-4870-470E-B01E-8B4A1B5E5302}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Contracs", "Contracs\Contracs.csproj", "{7EA8832D-4870-470E-B01E-8B4A1B5E5302}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
