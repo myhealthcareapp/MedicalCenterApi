@@ -4,6 +4,10 @@ using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Application.Services;
 using Infrastructure.Services;
+using MedicalCenterApi.Middleware;
+using MedicalCenterApi.Filters;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using MedicalCenterApi.Errors;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,9 +20,11 @@ builder.Services.AddControllers().AddNewtonsoftJson();
 builder.Services
     .AddApplication()
     .AddInfrastructure(builder.Configuration);
+builder.Services.AddSingleton<ProblemDetailsFactory, MedicalCenterProblemDetailFactory>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+//builder.Services.AddControllers(options => options.Filters.Add<ErrorHandlingFilterAttribute>());
 builder.Services.AddDbContext<ApplicationDbContext>(options=>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
@@ -31,7 +37,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+app.UseExceptionHandler("/error");
+//app.UseMiddleware<ErrorHandlingMiddleware>();
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
