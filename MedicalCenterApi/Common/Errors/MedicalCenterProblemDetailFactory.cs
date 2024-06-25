@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Options;
 using System;
 
-namespace MedicalCenterApi.Errors
+namespace MedicalCenterApi.Common.Errors
 {
 
     public class MedicalCenterProblemDetailFactory : ProblemDetailsFactory
