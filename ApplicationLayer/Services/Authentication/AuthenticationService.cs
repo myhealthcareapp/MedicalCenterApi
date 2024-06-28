@@ -32,7 +32,7 @@ namespace Application.Services.Authentication
             //2. validate the password
             if (user.Password != password)
             {
-                throw new Exception("Invalid Password");
+                return Errors.Authentication.InvalidCredentials;
             }
 
             var token = _jwtTokenGenerator.GenerateToken(user);
