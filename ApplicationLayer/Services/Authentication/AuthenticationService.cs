@@ -1,6 +1,8 @@
 ﻿using Application.Interface;
 using Application.Persistence;
+using Domain.Common;
 using Domain.Entities;
+using ErrorOr;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,22 +15,22 @@ namespace Application.Services.Authentication
     {
         private readonly IJwtTokenGenerator _jwtTokenGenerator;
         private readonly IUserRepository _userRepository;
-        public AuthenticationService(IJwtTokenGenerator jwtTokenGenerator, IUserRepository userRepository) 
+        public AuthenticationService(IJwtTokenGenerator jwtTokenGenerator, IUserRepository userRepository)
         {
             _jwtTokenGenerator = jwtTokenGenerator;
             _userRepository = userRepository;
-        
+
         }
-        public AuthenticationResult Login(string email, string password)
+        public ErrorOr <AuthenticationResult> Login(string email, string password)
         {
             //1. Check if user exist
             if (_userRepository.GetUserByEmail(email) is not User user)
             {
-                throw new Exception("User with given email doesnot exist");
+                return Errors.Authentication.InvalidCredentials;
             }
 
             //2. validate the password
-            if(user.Password != password)
+            if (user.Password != password)
             {
                 throw new Exception("Invalid Password");
             }
@@ -41,13 +43,13 @@ namespace Application.Services.Authentication
                );
         }
 
-        public AuthenticationResult Register(string firstName, string lastname, string email, string password)
+        public ErrorOr<AuthenticationResult> Register(string firstName, string lastname, string email, string password)
         {
             // Check if user already exist
 
             if (_userRepository.GetUserByEmail(email) != null)
             {
-                throw new Exception("User with given email already exist");
+                return Errors.User.DuplicateEmal;
             }
             //Create a user
             var user = new User
@@ -59,7 +61,7 @@ namespace Application.Services.Authentication
 
             };
 
-           
+
 
             // Create JWT Token
 

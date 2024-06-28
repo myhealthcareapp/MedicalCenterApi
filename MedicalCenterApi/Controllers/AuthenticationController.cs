@@ -1,13 +1,14 @@
 ﻿using Application.Services.Authentication;
 using Contracs.Authentication;
+using Domain.Common;
+using ErrorOr;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MedicalCenterApi.Controllers
 {
     [Route("auth")]
-    [ApiController]
-    public class AuthenticationController : ControllerBase
+    public class AuthenticationController : ApiController
     {
         private readonly IAuthenticationService _authenticationService;
         public AuthenticationController(IAuthenticationService authenticationService)
@@ -17,12 +18,21 @@ namespace MedicalCenterApi.Controllers
         [HttpPost("register")]
         public IActionResult Register(RegisterRequest request)
         {
-            var authResult = _authenticationService.Register(request.FirstName,
+            ErrorOr.ErrorOr<AuthenticationResult> authResult = _authenticationService.Register(request.FirstName,
                 request.LastName,
                 request.Email,
                 request.Password);
 
-            var response = new  AuthenticationResponse
+            return authResult.Match(
+                    authResult => Ok(MapAuthResult(authResult)),
+                    errors => Problem(errors)
+                    );
+
+        }
+
+        private static AuthenticationResponse MapAuthResult(AuthenticationResult authResult)
+        {
+            return new AuthenticationResponse
                 (
                 authResult.user.Id.ToString(),
                 authResult.user.FirstName,
@@ -30,25 +40,25 @@ namespace MedicalCenterApi.Controllers
                 authResult.user.Email,
                 authResult.Token
                 );
-            return Ok(response);
         }
 
         [HttpPost("login")]
         public IActionResult Login(LoginRequest request)
         {
-            var authResult = _authenticationService.Login(request.Email,
+            ErrorOr<AuthenticationResult> authResult = _authenticationService.Login(request.Email,
               request.Password);
+            if(authResult.IsError && authResult.FirstError == Errors.Authentication.InvalidCredentials)
+            {
+                return Problem(statusCode: StatusCodes.Status401Unauthorized,
+                        title: authResult.FirstError.Description
+                    );
+            }
+            return authResult.Match(
+                    authResult => Ok(MapAuthResult(authResult)),
+                    errors => Problem(errors)
+                    );
 
-            var response = new AuthenticationResponse
-                (
-                authResult.user.Id.ToString(),
-                authResult.user.FirstName,
-                authResult.user.LastName,
-                authResult.user.Email,
-                authResult.Token
-                );
-            return Ok(response);
         }
     }
-   
+
 }

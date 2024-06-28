@@ -1,8 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using ErrorOr;
+using MedicalCenterApi.Common.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Options;
 using System;
+using System.Diagnostics;
 
 namespace MedicalCenterApi.Common.Errors
 {
@@ -80,8 +83,19 @@ namespace MedicalCenterApi.Common.Errors
                 problemDetails.Type ??= clientErrorData.Link;
             }
 
-            problemDetails.Extensions["traceId"] = httpContext?.TraceIdentifier;
-            problemDetails.Extensions.Add("customProperty", "customvalue");
+            var traceId = Activity.Current?.Id ?? httpContext?.TraceIdentifier;
+            if (traceId == null)
+            {
+                problemDetails.Extensions["traceId"] = httpContext?.TraceIdentifier;
+            }
+
+            var errors = httpContext?.Items[HttpContextItemKeys.Errors] as List<Error>;
+
+            if (errors != null)
+            {
+                problemDetails.Extensions.Add("errorCodes", errors.Select(e => e.Code));
+            }
+           
             // Add more custom fields as needed
         }
 
