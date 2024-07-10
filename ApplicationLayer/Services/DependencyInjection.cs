@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,7 +14,8 @@ namespace Application.Services
     {
         public static IServiceCollection AddApplication(this IServiceCollection services)
         {
-            services.AddScoped<IAuthenticationService, AuthenticationService>();
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+          //  services.AddScoped<IAuthenticationService, AuthenticationService>();
             return services;
         }
     }
