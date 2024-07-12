@@ -7,6 +7,7 @@ using Infrastructure.Services;
 
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using MedicalCenterApi.Common.Errors;
+using MedicalCenterApi;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,11 +16,11 @@ var builder = WebApplication.CreateBuilder(args);
 //builder.Host.UseSerilog();
 // Add services to the container.
 
-builder.Services.AddControllers().AddNewtonsoftJson();
+
 builder.Services
+    .AddPresentation()
     .AddApplication()
     .AddInfrastructure(builder.Configuration);
-builder.Services.AddSingleton<ProblemDetailsFactory, MedicalCenterProblemDetailFactory>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

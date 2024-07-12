@@ -38,7 +38,7 @@ namespace Application.Services.Authentication.Commands.Register
             var user = new User
             {
                 FirstName = command.FirstName,
-                LastName = command.Lastname,
+                LastName = command.LastName,
                 Email = command.Email,
                 Password = command.Password
             };
