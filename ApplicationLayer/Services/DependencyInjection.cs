@@ -20,9 +20,9 @@ namespace Application.Services
         public static IServiceCollection AddApplication(this IServiceCollection services)
         {
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
-            
-            services.AddScoped<IPipelineBehavior<RegisterCommand, ErrorOr<AuthenticationResult>>,
-                ValidationRegisterCommandBehavior>();
+            services.AddScoped(
+                typeof(IPipelineBehavior<,>), 
+                typeof(ValidationBehavior<,>));
 
             services.AddScoped<IValidator<RegisterCommand>, RegisterCommandValidator>();
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
