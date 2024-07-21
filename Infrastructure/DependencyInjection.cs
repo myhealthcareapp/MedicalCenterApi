@@ -31,11 +31,9 @@ namespace Infrastructure.Services
         {
             var jwtSettings = new JwtSettings();
             configuration.Bind(JwtSettings.SectionName, jwtSettings);
-           
             services.AddSingleton(Options.Create(jwtSettings));
-            services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
 
-            services.Configure<JwtSettings>(configuration.GetSection(JwtSettings.SectionName));
+            services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
             
             services.AddAuthentication(defaultScheme: JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options => options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters

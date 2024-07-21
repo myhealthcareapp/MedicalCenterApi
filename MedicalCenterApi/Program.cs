@@ -40,8 +40,8 @@ if (app.Environment.IsDevelopment())
 app.UseExceptionHandler("/error");
 app.UseHttpsRedirection();
 
-app.UseAuthorization();
 app.UseAuthentication();
+app.UseAuthorization();
 app.MapControllers();
 
 app.Run();

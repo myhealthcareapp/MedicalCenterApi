@@ -1,5 +1,6 @@
 ﻿using ErrorOr;
 using MedicalCenterApi.Common.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -8,6 +9,7 @@ namespace MedicalCenterApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ApiController : ControllerBase
     {
         protected IActionResult Problem(List<Error> errors)
