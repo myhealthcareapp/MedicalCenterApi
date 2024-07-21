@@ -4,11 +4,13 @@ using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System.Numerics;
 using MedicalCenterApi.Data;
+using Microsoft.AspNetCore.Authorization;
 namespace MedicalCenterApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class DoctorController : ControllerBase
+   
+    public class DoctorController : ApiController
     {
         static List<Doctor> doctors = new List<Doctor> { new Doctor { Id = 1, Name = "Naila Furqan", Description = "Family Doctor" },
              new Doctor { Id = 2, Name = "Dr Shahab", Description = "Family DOctor" },
