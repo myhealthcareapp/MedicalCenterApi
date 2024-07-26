@@ -13,7 +13,7 @@ namespace MedicalCenterApi.Controllers
     public class DoctorController : ApiController
     {
         static List<Doctor> doctors = new List<Doctor> { new Doctor { Id = 1, Name = "Naila Furqan", Description = "Family Doctor" },
-             new Doctor { Id = 2, Name = "Dr Shahab", Description = "Family DOctor" },
+             new Doctor { Id = 2, Name = "Dr Shahab", Description = "Family Doctor" },
              new Doctor { Id = 3, Name = "Dr Dianna", Description = "Family Doctor" }
             
         };
