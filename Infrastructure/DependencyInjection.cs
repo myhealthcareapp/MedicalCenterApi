@@ -14,6 +14,9 @@ using Infrastructure.Persistence;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Extensions.Options;
+using Microsoft.EntityFrameworkCore;
+using Domain.Repositories;
+using Infrastructure.Repositories;
 
 namespace Infrastructure.Services
 {
@@ -21,9 +24,15 @@ namespace Infrastructure.Services
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, ConfigurationManager configuration)
         {
+            var connectionString = configuration.GetConnectionString("DefaultConnection");
+            services.AddDbContext<MedicalCenterDBContext>(options =>
+                            options.UseSqlServer(connectionString));
+
             services.AddAuth(configuration);
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
+            services.AddScoped<IDoctorsRepository, DoctorsRepository>();
+
             return services;
         }
 
@@ -34,7 +43,7 @@ namespace Infrastructure.Services
             services.AddSingleton(Options.Create(jwtSettings));
 
             services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
-            
+
             services.AddAuthentication(defaultScheme: JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options => options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
             {

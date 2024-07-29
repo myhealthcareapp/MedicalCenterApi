@@ -2,6 +2,7 @@
 using Application.Interface.Services;
 using Application.Services.Authentication;
 using Application.Services.Authentication.Commands.Register;
+using Application.Services.Doctors;
 using ErrorOr;
 using FluentValidation;
 using MediatR;
@@ -26,7 +27,9 @@ namespace Application.Services
 
             services.AddScoped<IValidator<RegisterCommand>, RegisterCommandValidator>();
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
-          //  services.AddScoped<IAuthenticationService, AuthenticationService>();
+            //  services.AddScoped<IAuthenticationService, AuthenticationService>();
+            services.AddScoped<IDoctorService, DoctorService>();
+
             return services;
         }
     }
