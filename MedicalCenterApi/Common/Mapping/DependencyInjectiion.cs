@@ -12,7 +12,7 @@ namespace MedicalCenterApi.Common.Mapping
             config.Scan(Assembly.GetExecutingAssembly());
             
             services.AddSingleton(config);
-            services.AddScoped<IMapper, ServiceMapper>();
+            
 
             return services;
         }
