@@ -5,6 +5,7 @@ using Application.Services.Authentication.Commands.Register;
 using Application.Services.Doctors;
 using ErrorOr;
 using FluentValidation;
+using MapsterMapper;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -29,7 +30,7 @@ namespace Application.Services
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
             //  services.AddScoped<IAuthenticationService, AuthenticationService>();
             services.AddScoped<IDoctorService, DoctorService>();
-
+            services.AddScoped<IMapper, ServiceMapper>();
             return services;
         }
     }

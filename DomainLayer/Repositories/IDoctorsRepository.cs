@@ -10,5 +10,6 @@ namespace Domain.Repositories
     public interface IDoctorsRepository
     {
         Task<IEnumerable<Doctor>> GetAllAsync();
+        Task<Doctor?> GetDoctorById(int id);
     }
 }

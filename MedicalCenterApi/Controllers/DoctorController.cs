@@ -20,6 +20,16 @@ namespace MedicalCenterApi.Controllers
             var result = await doctorService.GetAllDoctors();
             return Ok(result);
         }
+        [HttpGet("{id:int}")]
+        public async Task<IActionResult> GetDoctorById(int id)
+        {
+            var doctor = await doctorService.GetDoctorsById(id);   
+            if (doctor == null)
+            {
+                return NotFound();
+            }
+            return Ok(doctor);
+        }
       /*  private readonly ILogger<Doctor> _logger;
         private readonly ApplicationDbContext _db;
         public DoctorController(ILogger<Doctor> logger, ApplicationDbContext db)

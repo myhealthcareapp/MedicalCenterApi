@@ -1,3 +1,4 @@
+@MedicalCenterApi_HostAddress = https://localhost:7285
 @env = https://localhost:7285
 
 GET {{env}}/weatherforecast/
@@ -20,6 +21,10 @@ Content-Type: application/json
 
 ###
 
-GET {{env}}/api/doctor/2
+GET {{env}}/api/doctor/1
+
+###
+
+GET {{env}}/api/doctor/
 
 ###

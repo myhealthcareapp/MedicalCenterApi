@@ -17,5 +17,11 @@ namespace Infrastructure.Repositories
             var doctors = await dbContext.Doctors.ToListAsync();
             return doctors;
         }
+
+        public async Task<Doctor?> GetDoctorById(int id)
+        {
+            var doctor = await dbContext.Doctors.FindAsync(id);
+            return doctor;
+        }
     }
 }
