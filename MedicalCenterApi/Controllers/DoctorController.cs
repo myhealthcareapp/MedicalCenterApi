@@ -5,26 +5,29 @@ using Microsoft.AspNetCore.Mvc;
 using System.Numerics;
 using MedicalCenterApi.Data;
 using Microsoft.AspNetCore.Authorization;
+using Application.Services.Doctors;
 namespace MedicalCenterApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-   
-    public class DoctorController : ApiController
+    [AllowAnonymous]
+    public class DoctorController(IDoctorService doctorService) : ApiController
     {
-        static List<Doctor> doctors = new List<Doctor> { new Doctor { Id = 1, Name = "Naila Furqan", Description = "Family Doctor" },
-             new Doctor { Id = 2, Name = "Dr Shahab", Description = "Family Doctor" },
-             new Doctor { Id = 3, Name = "Dr Dianna", Description = "Family Doctor" }
-            
-        };
-        private readonly ILogger<Doctor> _logger;
+
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            var result = await doctorService.GetAllDoctors();
+            return Ok(result);
+        }
+      /*  private readonly ILogger<Doctor> _logger;
         private readonly ApplicationDbContext _db;
         public DoctorController(ILogger<Doctor> logger, ApplicationDbContext db)
         {
             _logger = logger;
             _db = db;
         }
-
+        
         [HttpGet]
         public ActionResult<IEnumerable<Doctor>> GetDoctors()
         {
@@ -134,6 +137,6 @@ namespace MedicalCenterApi.Controllers
             }
             return NoContent();
         }
-
+        */
     }
 }

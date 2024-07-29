@@ -1,6 +1,25 @@
-@MedicalCenterApi_HostAddress = http://localhost:5094
+@env = https://localhost:7285
 
-GET {{MedicalCenterApi_HostAddress}}/weatherforecast/
+GET {{env}}/weatherforecast/
 Accept: application/json
+
+###
+
+GET {{env}}/api/doctor
+
+###
+
+POST {{env}}/weatherforecast/generate?results=0
+Content-Type: application/json
+
+{
+  "Max":1,
+  "Min": 20
+  //TemperatureRequest
+}
+
+###
+
+GET {{env}}/api/doctor/2
 
 ###
