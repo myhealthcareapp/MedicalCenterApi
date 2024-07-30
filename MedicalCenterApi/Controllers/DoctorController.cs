@@ -7,24 +7,31 @@ using MedicalCenterApi.Data;
 using Microsoft.AspNetCore.Authorization;
 using Application.Services.Doctors;
 using Application.Services.Doctors.Dtos;
+using Application.Services.Doctors.Commands.CreateDoctor;
+using MediatR;
+using Application.Services.Doctors.Queries.GetAllDoctors;
+using Application.Services.Doctors.Queries.GetDoctorsbyId;
 namespace MedicalCenterApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     [AllowAnonymous]
-    public class DoctorController(IDoctorService doctorService) : ApiController
+    public class DoctorController(IMediator mediator) : ApiController
     {
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var result = await doctorService.GetAllDoctors();
-            return Ok(result);
+            var doctors = await mediator.Send(new GetAllDoctorsQuery());
+            return Ok(doctors);
         }
+
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetDoctorById(int id)
         {
-            var doctor = await doctorService.GetDoctorsById(id);   
+
+            var doctor = await mediator.Send(new GetDoctorByIdQuery(id));
+            
             if (doctor == null)
             {
                 return NotFound();
@@ -33,9 +40,10 @@ namespace MedicalCenterApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateRestaurant([FromBody]CreateDoctorDto doctor)
+        public async Task<IActionResult> CreateRestaurant([FromBody]CreateDoctorCommand command)
         {
-            var id = await doctorService.Create(doctor);
+            var id = await mediator.Send(command);
+
             return CreatedAtAction(nameof(GetDoctorById), new { id = id }, null);
         }
       /*  private readonly ILogger<Doctor> _logger;

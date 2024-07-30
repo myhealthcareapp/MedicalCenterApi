@@ -22,20 +22,25 @@ namespace Application
     {
         public static IServiceCollection AddApplication(this IServiceCollection services)
         {
-            services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+            var applicationAssembly = Assembly.GetExecutingAssembly();
+
+            services.AddValidatorsFromAssembly(applicationAssembly)
+                .AddFluentValidationAutoValidation();
+
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(applicationAssembly));
+           
             services.AddScoped(
                 typeof(IPipelineBehavior<,>),
                 typeof(ValidationBehavior<,>));
 
             services.AddScoped<IValidator<RegisterCommand>, RegisterCommandValidator>();
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
-            //  services.AddScoped<IAuthenticationService, AuthenticationService>();
-            services.AddScoped<IDoctorService, DoctorService>();
+            
+
+
             services.AddScoped<IMapper, ServiceMapper>();
 
-            var applicationAssembly = typeof(DependencyInjection).Assembly;
-            services.AddValidatorsFromAssembly(applicationAssembly)
-                .AddFluentValidationAutoValidation();
+            
 
             return services;
         }

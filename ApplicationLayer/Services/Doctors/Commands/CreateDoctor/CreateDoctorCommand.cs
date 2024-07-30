@@ -1,18 +1,16 @@
-﻿using System;
+﻿using MediatR;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Services.Doctors.Dtos
+namespace Application.Services.Doctors.Commands.CreateDoctor
 {
-    public class CreateDoctorDto
+    public class CreateDoctorCommand : IRequest<int>
     {
-        [StringLength(100, MinimumLength =3)]
         public string Name { get; set; } = default!;
         public string? Description { get; set; }
         public string Specialities { get; set; } = default!;
-
     }
 }

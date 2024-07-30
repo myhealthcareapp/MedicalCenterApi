@@ -6,15 +6,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Services.Doctors.Validators
+namespace Application.Services.Doctors.Commands.CreateDoctor
 {
-    public class CreateDoctorDtoValidator : AbstractValidator<CreateDoctorDto>
+    public class CreateDoctorCommandValidator : AbstractValidator<CreateDoctorCommand>
     {
-        public CreateDoctorDtoValidator()
+        public CreateDoctorCommandValidator()
         {
-            RuleFor(d =>  d.Name)
+            RuleFor(d => d.Name)
                 .NotEmpty()
-                .Length(3,100)
+                .Length(3, 100)
                 .WithMessage("Namemust be atleast 3 charecter and maximum 100 - Ali")
 ;
 
