@@ -1,60 +1,56 @@
 ﻿using Application.Services.Authentication;
+using Application.Services.Authentication.Commands.Register;
+using Application.Services.Authentication.Queries.Login;
 using Contracs.Authentication;
 using Domain.Common;
 using ErrorOr;
+using MapsterMapper;
+using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MedicalCenterApi.Controllers
 {
     [Route("auth")]
+    [AllowAnonymous]
     public class AuthenticationController : ApiController
     {
-        private readonly IAuthenticationService _authenticationService;
-        public AuthenticationController(IAuthenticationService authenticationService)
+        private readonly ISender _mediator;
+        private readonly IMapper _mapper;
+
+        public AuthenticationController(ISender mediator, IMapper mapper)
         {
-            _authenticationService = authenticationService;
+            _mediator = mediator;
+            _mapper = mapper;
         }
         [HttpPost("register")]
-        public IActionResult Register(RegisterRequest request)
+        public async Task<IActionResult> Register(RegisterRequest request)
         {
-            ErrorOr.ErrorOr<AuthenticationResult> authResult = _authenticationService.Register(request.FirstName,
-                request.LastName,
-                request.Email,
-                request.Password);
+            var command = _mapper.Map<RegisterCommand>(request); // new RegisterCommand(request.FirstName, request.LastName, request.Email, request.Password);
+
+            ErrorOr.ErrorOr<AuthenticationResult> authResult = await _mediator.Send(command);
 
             return authResult.Match(
-                    authResult => Ok(MapAuthResult(authResult)),
+                    authResult => Ok(_mapper.Map<AuthenticationResponse>(authResult)),
                     errors => Problem(errors)
                     );
 
         }
 
-        private static AuthenticationResponse MapAuthResult(AuthenticationResult authResult)
-        {
-            return new AuthenticationResponse
-                (
-                authResult.user.Id.ToString(),
-                authResult.user.FirstName,
-                authResult.user.LastName,
-                authResult.user.Email,
-                authResult.Token
-                );
-        }
-
         [HttpPost("login")]
-        public IActionResult Login(LoginRequest request)
+        public async Task<IActionResult> Login(LoginRequest request)
         {
-            ErrorOr<AuthenticationResult> authResult = _authenticationService.Login(request.Email,
-              request.Password);
-            if(authResult.IsError && authResult.FirstError == Errors.Authentication.InvalidCredentials)
+            var query = _mapper.Map<LoginQuery>(request); //  new LoginQuery(request.Email, request.Password);
+            ErrorOr<AuthenticationResult> authResult = await _mediator.Send(query);
+            if (authResult.IsError && authResult.FirstError == Errors.Authentication.InvalidCredentials)
             {
                 return Problem(statusCode: StatusCodes.Status401Unauthorized,
                         title: authResult.FirstError.Description
                     );
             }
             return authResult.Match(
-                    authResult => Ok(MapAuthResult(authResult)),
+                    authResult => Ok(_mapper.Map<AuthenticationResponse>(authResult)),
                     errors => Problem(errors)
                     );
 

@@ -4,25 +4,48 @@ using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System.Numerics;
 using MedicalCenterApi.Data;
+using Microsoft.AspNetCore.Authorization;
+using Application.Services.Doctors;
+using Application.Services.Doctors.Dtos;
 namespace MedicalCenterApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class DoctorController : ControllerBase
+    [AllowAnonymous]
+    public class DoctorController(IDoctorService doctorService) : ApiController
     {
-        static List<Doctor> doctors = new List<Doctor> { new Doctor { Id = 1, Name = "Naila Furqan", Description = "Family Doctor" },
-             new Doctor { Id = 2, Name = "Dr Shahab", Description = "Family DOctor" },
-             new Doctor { Id = 3, Name = "Dr Dianna", Description = "Family Doctor" }
-            
-        };
-        private readonly ILogger<Doctor> _logger;
+
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            var result = await doctorService.GetAllDoctors();
+            return Ok(result);
+        }
+        [HttpGet("{id:int}")]
+        public async Task<IActionResult> GetDoctorById(int id)
+        {
+            var doctor = await doctorService.GetDoctorsById(id);   
+            if (doctor == null)
+            {
+                return NotFound();
+            }
+            return Ok(doctor);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateRestaurant([FromBody]CreateDoctorDto doctor)
+        {
+            var id = await doctorService.Create(doctor);
+            return CreatedAtAction(nameof(GetDoctorById), new { id = id }, null);
+        }
+      /*  private readonly ILogger<Doctor> _logger;
         private readonly ApplicationDbContext _db;
         public DoctorController(ILogger<Doctor> logger, ApplicationDbContext db)
         {
             _logger = logger;
             _db = db;
         }
-
+        
         [HttpGet]
         public ActionResult<IEnumerable<Doctor>> GetDoctors()
         {
@@ -132,6 +155,6 @@ namespace MedicalCenterApi.Controllers
             }
             return NoContent();
         }
-
+        */
     }
 }
