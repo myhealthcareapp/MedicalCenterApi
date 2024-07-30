@@ -13,7 +13,7 @@ POST {{env}}/api/doctor
 Content-Type: application/json
 
 {
-  "Name": "Ali Zafar",
+  "Name": "",
   "Description": "General Physician",
   "Specialities": "Ffamily doctor"
 }
