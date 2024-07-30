@@ -6,6 +6,7 @@ using System.Numerics;
 using MedicalCenterApi.Data;
 using Microsoft.AspNetCore.Authorization;
 using Application.Services.Doctors;
+using Application.Services.Doctors.Dtos;
 namespace MedicalCenterApi.Controllers
 {
     [Route("api/[controller]")]
@@ -29,6 +30,13 @@ namespace MedicalCenterApi.Controllers
                 return NotFound();
             }
             return Ok(doctor);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateRestaurant([FromBody]CreateDoctorDto doctor)
+        {
+            var id = await doctorService.Create(doctor);
+            return CreatedAtAction(nameof(GetDoctorById), new { id = id }, null);
         }
       /*  private readonly ILogger<Doctor> _logger;
         private readonly ApplicationDbContext _db;

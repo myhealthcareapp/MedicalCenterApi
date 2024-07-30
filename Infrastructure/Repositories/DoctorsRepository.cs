@@ -23,5 +23,12 @@ namespace Infrastructure.Repositories
             var doctor = await dbContext.Doctors.FindAsync(id);
             return doctor;
         }
+
+        public async Task<int> Create(Doctor doctor)
+        {
+            dbContext.Doctors.Add(doctor);
+            await dbContext.SaveChangesAsync();
+            return doctor.Id;   
+        }
     }
 }

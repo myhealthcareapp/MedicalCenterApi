@@ -1,4 +1,4 @@
-﻿using Application.Services.Doctors.Dos.Doctors;
+﻿using Application.Services.Doctors.Dtos;
 using Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -10,7 +10,10 @@ namespace Application.Services.Doctors
 {
     public interface IDoctorService
     {
-        public Task<IEnumerable<DoctorDto>> GetAllDoctors();
-        public Task<DoctorDto?> GetDoctorsById(int id);
+        Task<IEnumerable<DoctorDto>> GetAllDoctors();
+        Task<DoctorDto?> GetDoctorsById(int id);
+        Task<int> Create(CreateDoctorDto dto);
+
+        
     }
 }
