@@ -16,7 +16,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Services
+namespace Application
 {
     public static class DependencyInjection
     {
@@ -24,7 +24,7 @@ namespace Application.Services
         {
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
             services.AddScoped(
-                typeof(IPipelineBehavior<,>), 
+                typeof(IPipelineBehavior<,>),
                 typeof(ValidationBehavior<,>));
 
             services.AddScoped<IValidator<RegisterCommand>, RegisterCommandValidator>();

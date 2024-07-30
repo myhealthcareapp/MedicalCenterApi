@@ -3,12 +3,12 @@ using Application.Services.Authentication;
 using MedicalCenterApi.Data;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
-using Application.Services;
 using Infrastructure.Services;
 
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using MedicalCenterApi.Common.Errors;
 using MedicalCenterApi;
+using Application;
 
 var builder = WebApplication.CreateBuilder(args);
 
