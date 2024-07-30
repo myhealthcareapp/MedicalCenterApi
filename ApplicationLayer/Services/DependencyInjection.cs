@@ -5,6 +5,7 @@ using Application.Services.Authentication.Commands.Register;
 using Application.Services.Doctors;
 using ErrorOr;
 using FluentValidation;
+using FluentValidation.AspNetCore;
 using MapsterMapper;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
@@ -31,6 +32,11 @@ namespace Application.Services
             //  services.AddScoped<IAuthenticationService, AuthenticationService>();
             services.AddScoped<IDoctorService, DoctorService>();
             services.AddScoped<IMapper, ServiceMapper>();
+
+            var applicationAssembly = typeof(DependencyInjection).Assembly;
+            services.AddValidatorsFromAssembly(applicationAssembly)
+                .AddFluentValidationAutoValidation();
+
             return services;
         }
     }
