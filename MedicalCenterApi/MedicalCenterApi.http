@@ -1,30 +1,21 @@
 @MedicalCenterApi_HostAddress = https://localhost:7285
 @env = https://localhost:7285
 
-GET {{env}}/weatherforecast/
-Accept: application/json
-
 ###
-
 GET {{env}}/api/doctor
-
-###
-
-POST {{env}}/weatherforecast/generate?results=0
-Content-Type: application/json
-
-{
-  "Max":1,
-  "Min": 20
-  //TemperatureRequest
-}
-
 ###
 
 GET {{env}}/api/doctor/1
 
 ###
 
-GET {{env}}/api/doctor/
+POST {{env}}/api/doctor
+Content-Type: application/json
+
+{
+  "Name": "Ali Zafar",
+  "Description": "General Physician",
+  "Specialities": "Ffamily doctor"
+}
 
 ###

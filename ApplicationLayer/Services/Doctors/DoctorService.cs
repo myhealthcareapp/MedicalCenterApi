@@ -1,5 +1,4 @@
-﻿
-using Application.Services.Doctors.Dos.Doctors;
+﻿using Application.Services.Doctors.Dtos;
 using Domain.Entities;
 using Domain.Repositories;
 using Mapster;
@@ -32,6 +31,15 @@ namespace Application.Services.Doctors
             var doctor = await doctorsRepository.GetDoctorById(id);
             var doctorDTO = mapper.Map<DoctorDto>(doctor);
             return doctorDTO;
+        }
+
+        public async Task<int> Create(CreateDoctorDto dto)
+        {
+            logger.LogInformation($"Creating a new Doctor {dto}");
+            var doctor = mapper.Map<Doctor>(dto);
+
+            var doctorId = await doctorsRepository.Create(doctor);
+            return doctorId;
         }
     }
 }
