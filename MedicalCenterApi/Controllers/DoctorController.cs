@@ -18,12 +18,13 @@ namespace MedicalCenterApi.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [AllowAnonymous]
-    public class DoctorController(IMediator mediator) : ApiController
+    public class DoctorController(IMediator mediator, ILogger<DoctorController> logger) : ApiController
     {
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
+            logger.LogInformation("Ali : Fetching Doctor List");
             var doctors = await mediator.Send(new GetAllDoctorsQuery());
             return Ok(doctors);
         }
@@ -31,6 +32,7 @@ namespace MedicalCenterApi.Controllers
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetDoctorById(int id)
         {
+            logger.LogInformation($"Ali : Fetching Doctor for id {id}");
 
             var doctor = await mediator.Send(new GetDoctorByIdQuery(id));
             
