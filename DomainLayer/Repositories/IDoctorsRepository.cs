@@ -12,5 +12,6 @@ namespace Domain.Repositories
         Task<IEnumerable<Doctor>> GetAllAsync();
         Task<Doctor?> GetDoctorById(int id);
         Task<int> Create(Doctor doctor);
+        Task<bool> Delete(Doctor doctor);
     }
 }

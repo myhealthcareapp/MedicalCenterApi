@@ -30,5 +30,12 @@ namespace Infrastructure.Repositories
             await dbContext.SaveChangesAsync();
             return doctor.Id;   
         }
+
+        public async Task<bool> Delete(Doctor doctor)
+        {
+            dbContext.Remove(doctor);
+            await dbContext.SaveChangesAsync(true);
+            return true;
+        }
     }
 }

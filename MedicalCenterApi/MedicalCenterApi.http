@@ -19,3 +19,7 @@ Content-Type: application/json
 }
 
 ###
+
+DELETE {{env}}/api/doctor/1002
+
+###
