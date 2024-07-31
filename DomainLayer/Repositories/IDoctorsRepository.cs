@@ -13,5 +13,7 @@ namespace Domain.Repositories
         Task<Doctor?> GetDoctorById(int id);
         Task<int> Create(Doctor doctor);
         Task<bool> Delete(Doctor doctor);
+
+        Task<bool> UpdateDoctor(Doctor doctor);
     }
 }

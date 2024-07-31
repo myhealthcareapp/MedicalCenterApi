@@ -13,7 +13,7 @@ POST {{env}}/api/doctor
 Content-Type: application/json
 
 {
-  "Name": "",
+  "Name": "Ali",
   "Description": "General Physician",
   "Specialities": "Ffamily doctor"
 }
@@ -23,3 +23,13 @@ Content-Type: application/json
 DELETE {{env}}/api/doctor/1002
 
 ###
+
+PATCH {{env}}/api/doctor/1004
+Content-Type: application/json
+
+{
+  "Name": "Ali Zafar",
+  "Description": "The Physician",
+
+}
+

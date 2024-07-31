@@ -37,5 +37,15 @@ namespace Infrastructure.Repositories
             await dbContext.SaveChangesAsync(true);
             return true;
         }
+
+        public async Task<bool> UpdateDoctor(Doctor doctor)
+        {
+            dbContext.Update(doctor);
+            await dbContext.SaveChangesAsync();
+            return true;
+
+
+
+        }
     }
 }
