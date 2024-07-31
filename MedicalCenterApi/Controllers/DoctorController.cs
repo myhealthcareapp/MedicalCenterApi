@@ -12,6 +12,7 @@ using MediatR;
 using Application.Services.Doctors.Queries.GetAllDoctors;
 using Application.Services.Doctors.Queries.GetDoctorsbyId;
 using Application.Services.Doctors.Commands.DeleteDoctor;
+using Application.Services.Doctors.Commands.UpdateDoctor;
 namespace MedicalCenterApi.Controllers
 {
     [Route("api/[controller]")]
@@ -54,6 +55,19 @@ namespace MedicalCenterApi.Controllers
             var isDeleted = await mediator.Send(new DeleteDoctorCommand(id));
 
             if (isDeleted)
+            {
+                return NoContent();
+            }
+            return NotFound();
+        }
+
+        [HttpPatch("{id:int}")]
+        public async Task<IActionResult> UpdateDoctor([FromRoute] int id,
+            [FromBody] UpdateDoctorCommand command)
+        {
+            command.Id = id;
+            var isUpdated = await mediator.Send(command);
+            if (isUpdated)
             {
                 return NoContent();
             }
