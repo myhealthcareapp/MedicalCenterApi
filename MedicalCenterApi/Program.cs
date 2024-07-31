@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.Infrastructure;
 using MedicalCenterApi.Common.Errors;
 using MedicalCenterApi;
 using Application;
+using Serilog.Events;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,6 +31,10 @@ builder.Services.AddSwaggerGen();
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });*/
+builder.Host.UseSerilog((context, configuration) =>
+    configuration.ReadFrom.Configuration(context.Configuration)
+    );
+    
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -38,6 +43,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+//app.UseSerilogRequestLogging();
 app.UseExceptionHandler("/error");
 app.UseHttpsRedirection();
 
