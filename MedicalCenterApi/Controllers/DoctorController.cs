@@ -22,7 +22,7 @@ namespace MedicalCenterApi.Controllers
     {
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<ActionResult<IEnumerable<DoctorDto>>> GetAll()
         {
             logger.LogInformation("Ali : Fetching Doctor List");
             var doctors = await mediator.Send(new GetAllDoctorsQuery());
@@ -30,7 +30,7 @@ namespace MedicalCenterApi.Controllers
         }
 
         [HttpGet("{id:int}")]
-        public async Task<IActionResult> GetDoctorById(int id)
+        public async Task<ActionResult<DoctorDto>> GetDoctorById(int id)
         {
             logger.LogInformation($"Ali : Fetching Doctor for id {id}");
 
@@ -52,6 +52,8 @@ namespace MedicalCenterApi.Controllers
         }
 
         [HttpDelete("{id:int}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteDoctor([FromRoute] int id)
         {
             var isDeleted = await mediator.Send(new DeleteDoctorCommand(id));
@@ -64,6 +66,8 @@ namespace MedicalCenterApi.Controllers
         }
 
         [HttpPatch("{id:int}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> UpdateDoctor([FromRoute] int id,
             [FromBody] UpdateDoctorCommand command)
         {
