@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Common
+namespace Domain.Common.Errors
 {
     public static partial class Errors
     {
@@ -15,6 +15,9 @@ namespace Domain.Common
                 code: "Auth.InvalidCredentails",
                 description: "Invaid credentials"
                );
+
+            public static Error DuplicateEmal => Error.Conflict(code: "User.DuplicateEmail",
+               description: "Email already in use.");
         }
     }
 }

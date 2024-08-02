@@ -2,7 +2,7 @@
 using Application.Services.Authentication.Commands.Register;
 using Application.Services.Authentication.Queries.Login;
 using Contracs.Authentication;
-using Domain.Common;
+using Domain.Common.Errors;
 using ErrorOr;
 using MapsterMapper;
 using MediatR;
@@ -29,7 +29,7 @@ namespace MedicalCenterApi.Controllers
         {
             var command = _mapper.Map<RegisterCommand>(request); // new RegisterCommand(request.FirstName, request.LastName, request.Email, request.Password);
 
-            ErrorOr.ErrorOr<AuthenticationResult> authResult = await _mediator.Send(command);
+          ErrorOr<AuthenticationResult> authResult = await _mediator.Send(command);
 
             return authResult.Match(
                     authResult => Ok(_mapper.Map<AuthenticationResponse>(authResult)),
@@ -43,12 +43,7 @@ namespace MedicalCenterApi.Controllers
         {
             var query = _mapper.Map<LoginQuery>(request); //  new LoginQuery(request.Email, request.Password);
             ErrorOr<AuthenticationResult> authResult = await _mediator.Send(query);
-            if (authResult.IsError && authResult.FirstError == Errors.Authentication.InvalidCredentials)
-            {
-                return Problem(statusCode: StatusCodes.Status401Unauthorized,
-                        title: authResult.FirstError.Description
-                    );
-            }
+            
             return authResult.Match(
                     authResult => Ok(_mapper.Map<AuthenticationResponse>(authResult)),
                     errors => Problem(errors)

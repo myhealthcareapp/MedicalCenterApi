@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 namespace Application.Services.Doctors.Queries.GetAllDoctors
 {
     public class GetAllDoctorsQueryHandler(ILogger<GetAllDoctorsQueryHandler> logger,
-        IMapper mapper, IDoctorsRepository doctorsRepository) : IRequestHandler<GetAllDoctorsQuery, IEnumerable<DoctorDto>>
+        IDoctorsRepository doctorsRepository) : IRequestHandler<GetAllDoctorsQuery, IEnumerable<DoctorDto>>
     {
         public async Task<IEnumerable<DoctorDto>> Handle(GetAllDoctorsQuery request, CancellationToken cancellationToken)
         {

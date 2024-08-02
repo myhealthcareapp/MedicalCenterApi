@@ -1,16 +1,19 @@
 ﻿using Application.Services.Doctors.Dtos;
+using ErrorOr;
 using MediatR;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Application.Services.Doctors.Commands.UpdateDoctor
 {
-    public class UpdateDoctorCommand : IRequest<bool>
+    public class UpdateDoctorCommand : IRequest<ErrorOr<bool>>
     {
+        [JsonIgnore]
         public int Id { get; set; }
         
         [Required(ErrorMessage = "Name is required")]

@@ -1,6 +1,6 @@
 ﻿using Application.Interface.Services;
 using Application.Services.Authentication;
-using MedicalCenterApi.Common.Errors;
+
 using MedicalCenterApi.Common.Mapping;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,7 +18,6 @@ namespace MedicalCenterApi
         public static IServiceCollection AddPresentation(this IServiceCollection services)
         {
             services.AddControllers().AddNewtonsoftJson();
-            services.AddSingleton<ProblemDetailsFactory, MedicalCenterProblemDetailFactory>();
             services.AddMappings();
             return services;
         }

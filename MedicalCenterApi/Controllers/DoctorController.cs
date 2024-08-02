@@ -13,6 +13,7 @@ using Application.Services.Doctors.Queries.GetAllDoctors;
 using Application.Services.Doctors.Queries.GetDoctorsbyId;
 using Application.Services.Doctors.Commands.DeleteDoctor;
 using Application.Services.Doctors.Commands.UpdateDoctor;
+using ErrorOr;
 namespace MedicalCenterApi.Controllers
 {
     [Route("api/[controller]")]
@@ -30,21 +31,19 @@ namespace MedicalCenterApi.Controllers
         }
 
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<DoctorDto>> GetDoctorById(int id)
+        public async Task<IActionResult> GetDoctorById(int id)
         {
             logger.LogInformation($"Ali : Fetching Doctor for id {id}");
 
-            var doctor = await mediator.Send(new GetDoctorByIdQuery(id));
-            
-            if (doctor == null)
-            {
-                return NotFound();
-            }
-            return Ok(doctor);
+            ErrorOr<DoctorDto> result = await mediator.Send(new GetDoctorByIdQuery(id));
+           return result.Match(
+                result => Ok(result),
+                errors => Problem(errors)
+                );
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateRestaurant([FromBody]CreateDoctorCommand command)
+        public async Task<IActionResult> CreateDoctor([FromBody]CreateDoctorCommand command)
         {
             var id = await mediator.Send(command);
 
@@ -56,13 +55,13 @@ namespace MedicalCenterApi.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteDoctor([FromRoute] int id)
         {
-            var isDeleted = await mediator.Send(new DeleteDoctorCommand(id));
+            ErrorOr<bool> result = await mediator.Send(new DeleteDoctorCommand(id));
+           
+            return result.Match(
+                    result => Ok(NoContent()),
+                    errors => Problem(errors)
 
-            if (isDeleted)
-            {
-                return NoContent();
-            }
-            return NotFound();
+                );
         }
 
         [HttpPatch("{id:int}")]
@@ -71,13 +70,13 @@ namespace MedicalCenterApi.Controllers
         public async Task<IActionResult> UpdateDoctor([FromRoute] int id,
             [FromBody] UpdateDoctorCommand command)
         {
-            command.Id = id;
-            var isUpdated = await mediator.Send(command);
-            if (isUpdated)
-            {
-                return NoContent();
-            }
-            return NotFound();
+           command.Id = id;
+           var result = await mediator.Send(command);
+
+           return result.Match(
+                result => NoContent(),
+                errors => Problem(errors)
+                );
         }
 
         /*  private readonly ILogger<Doctor> _logger;

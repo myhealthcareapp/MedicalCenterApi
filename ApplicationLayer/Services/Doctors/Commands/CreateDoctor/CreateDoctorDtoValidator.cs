@@ -13,14 +13,13 @@ namespace Application.Services.Doctors.Commands.CreateDoctor
         public CreateDoctorCommandValidator()
         {
             RuleFor(d => d.Name)
-                .NotEmpty()
                 .Length(3, 100)
-                .WithMessage("Namemust be atleast 3 charecter and maximum 100 - Ali")
+                .WithMessage("Name must be atleast 3 charecter and maximum 100 - Ali")
 ;
 
             RuleFor(d => d.Description)
                 .NotEmpty()
-                .WithMessage("Description is required");
+                .WithMessage("Description is required by Ali Zafar");
 
 
         }
