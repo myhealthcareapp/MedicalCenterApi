@@ -9,10 +9,10 @@ namespace Domain.Common.Errors
 {
     public static partial class Errors
     {
-        public static class User
+        public static class Doctor
         {
-            public static Error DuplicateEmal => Error.Conflict(code: "User.DuplicateEmail",
-                description: "Email already in use.");
+            public static Error DoctorDoesNotExist => Error.NotFound(code: "Doctor.NotFound",
+                 description: "The doctor with the provided ID does not exist in the database.");
         }
     }
 }

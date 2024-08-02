@@ -1,4 +1,4 @@
-﻿using Domain.Common;
+﻿using Domain.Common.Errors;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
