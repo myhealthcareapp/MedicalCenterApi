@@ -15,6 +15,9 @@ namespace Domain.Common
                 code: "Auth.InvalidCredentails",
                 description: "Invaid credentials"
                );
+
+            public static Error DuplicateEmal => Error.Conflict(code: "User.DuplicateEmail",
+               description: "Email already in use.");
         }
     }
 }

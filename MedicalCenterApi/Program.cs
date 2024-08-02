@@ -6,7 +6,7 @@ using Serilog;
 using Infrastructure.Services;
 
 using Microsoft.AspNetCore.Mvc.Infrastructure;
-using MedicalCenterApi.Common.Errors;
+
 using MedicalCenterApi;
 using Application;
 using Serilog.Events;
